@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <h1>Consulta de Categorias</h1>
+    <h1>Consulta de Autores</h1>
     <hr>
     <v-container>
       <v-row>
         <v-col>
           <v-btn
             outlined
-            @click="getCategorias"
+            @click="getAutores"
           >
             Pesquisar
           </v-btn>
@@ -15,7 +15,7 @@
         <v-col>
           <v-btn
             outlined
-            to="/categorias/cadastro"
+            to="/autores/cadastro"
           >
             Cadastrar
           </v-btn>
@@ -25,7 +25,7 @@
     <v-container>
       <v-data-table
         :headers="headers"
-        :items="categorias"
+        :items="autores"
         :items-per-page="10"
         class="elevation-1"
       ></v-data-table>
@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: 'ConsultaCategoriasPage',
+  name: 'ConsultaAutoresPage',
 
   data () {
     return {
@@ -51,19 +51,25 @@ export default {
           align: 'center',
           sortable: false,
           value: 'nome',
+        },
+        {
+          text: 'E-mail',
+          align: 'center',
+          sortable: false,
+          value: 'email',
         }
       ],
-      categorias: []
+      autores: []
     }
   },
 
   created () { //executado toda vez que a pagina é carregada
-    this.getCategorias()
+    this.getAutores()
   },
 
   methods: {
-    async getCategorias () {
-      this.categorias = await this.$axios.$get('http://localhost:3333/categorias');
+    async getAutores () {
+      this.autores = await this.$axios.$get('http://localhost:3333/autores');
     }
   }
 
