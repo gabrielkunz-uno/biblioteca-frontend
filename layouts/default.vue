@@ -99,13 +99,28 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Home',
           to: '/'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          title: 'Livros',
+          to: '/livros'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Categorias',
+          to: '/categorias'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Autores',
+          to: '/autores'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Usuários',
+          to: '/usuarios'
         }
       ],
       miniVariant: false,
