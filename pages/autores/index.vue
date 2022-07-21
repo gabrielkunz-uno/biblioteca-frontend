@@ -87,14 +87,17 @@ export default {
   methods: {
     async getAutores () {
       this.autores = await this.$axios.$get('http://localhost:3333/autores');
-      this.$toast('Carcule, ta ai os autores')
     },
 
     async deletar (autor) {
-      if (confirm(`Deseja deletar o autor id ${autor.id} - ${autor.nome}?`)) {
-        let response = await this.$axios.$post('http://localhost:3333/autores/deletar', { id: autor.id });
-        this.$toast(response.message)
-        this.getAutores();
+      try {
+        if (confirm(`Deseja deletar o autor id ${autor.id} - ${autor.nome}?`)) {
+          let response = await this.$axios.$post('http://localhost:3333/autores/deletar', { id: autor.id });
+          this.$toast.success(response.message)
+          this.getAutores();
+        }
+      } catch (error) {
+        this.$toast.error('Ocorreu um erro ao atender a requisição. Contate o administrador do sistema.')
       }
     }
   }

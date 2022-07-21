@@ -2,7 +2,7 @@
   <v-container>
     <h1>Cadastro de Autores</h1>
     <hr>
-    <v-form>
+    <v-form v-model="valid">
       <v-container>
         <v-row>
           <v-col
@@ -23,6 +23,8 @@
               v-model="autor.nome"
               placeholder="Nome"
               label="Nome"
+              :rules="rule"
+              required
               outlined
             />
           </v-col>
@@ -33,6 +35,8 @@
               v-model="autor.email"
               placeholder="E-mail"
               label="E-mail"
+              :rules="rule"
+              required
               outlined
             />
           </v-col>
@@ -60,22 +64,34 @@ export default {
 
   data () {
     return {
+      valid: false,
       autor: {
         id: null,
         nome: null,
         email: null
-      }
+      },
+      rule: [
+        v => !!v || 'Esse campo é obrigatório'
+      ]
     }
   },
 
   methods: {
     async cadastrar () {
-      let autor = {
-        nome: this.autor.nome,
-        email: this.autor.email
-      };
-      let response = await this.$axios.$post('http://localhost:3333/autores', autor);
-      console.log(response);
+      try {
+        if (!this.valid) {
+          return this.$toast.warning('O formulário de cadastro não é válido!')
+        }
+        let autor = {
+          nome: this.autor.nome,
+          email: this.autor.email
+        };
+        await this.$axios.$post('http://localhost:3333/autores', autor);
+        this.$toast.success('Cadastro realizado com sucesso!');
+        this.$router.push('/autores');
+      } catch (error) {
+        this.$toast.error('Ocorreu um erro ao realizar o cadastro!');
+      }
     }
   }
 }
