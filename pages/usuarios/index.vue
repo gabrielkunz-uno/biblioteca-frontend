@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <h1>Consulta de Livros</h1>
+    <h1>Consulta de Usuários</h1>
     <hr>
     <v-container>
       <v-row>
         <v-col>
           <v-btn
             outlined
-            @click="getLivros"
+            @click="getUsuarios"
           >
             Pesquisar
           </v-btn>
@@ -15,7 +15,7 @@
         <v-col>
           <v-btn
             outlined
-            to="/livros/cadastro"
+            to="/usuarios/cadastro"
           >
             Cadastrar
           </v-btn>
@@ -25,7 +25,7 @@
     <v-container>
       <v-data-table
         :headers="headers"
-        :items="livros"
+        :items="usuarios"
         :items-per-page="10"
         class="elevation-1"
       >
@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  name: 'ConsultaLivrosPage',
+  name: 'ConsultaUsuariosPage',
 
   data () {
     return {
@@ -63,37 +63,31 @@ export default {
           value: 'id', //é o dado que essa coluna vai receber
         },
         {
-          text: 'Título',
+          text: 'Nome',
           align: 'center',
           sortable: false,
-          value: 'titulo',
+          value: 'nome',
         },
         {
-          text: 'Categoria',
+          text: 'E-mail',
           align: 'center',
           sortable: false,
-          value: 'categoria.nome',
-        },
-        {
-          text: 'Autor',
-          align: 'center',
-          sortable: false,
-          value: 'autor.nome',
+          value: 'email',
         },
         { text: "", value: "actions" }
       ],
-      livros: []
+      usuarios: []
     }
   },
 
   created () { //executado toda vez que a pagina é carregada
-    this.getLivros()
+    this.getUsuarios()
   },
 
   methods: {
-    async getLivros () {
-      this.livros = await this.$axios.$get('http://localhost:3333/livros');
-    },
+    async getUsuarios () {
+      this.usuarios = await this.$axios.$get('http://localhost:3333/usuarios');
+    }
   }
 
 }

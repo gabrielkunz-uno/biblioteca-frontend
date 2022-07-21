@@ -28,7 +28,23 @@
         :items="autores"
         :items-per-page="10"
         class="elevation-1"
-      ></v-data-table>
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editItem(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            small
+            @click="deletar(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
     </v-container>
   </v-container>
 </template>
@@ -57,7 +73,8 @@ export default {
           align: 'center',
           sortable: false,
           value: 'email',
-        }
+        },
+        { text: "", value: "actions" }
       ],
       autores: []
     }
@@ -70,6 +87,15 @@ export default {
   methods: {
     async getAutores () {
       this.autores = await this.$axios.$get('http://localhost:3333/autores');
+      this.$toast('Carcule, ta ai os autores')
+    },
+
+    async deletar (autor) {
+      if (confirm(`Deseja deletar o autor id ${autor.id} - ${autor.nome}?`)) {
+        let response = await this.$axios.$post('http://localhost:3333/autores/deletar', { id: autor.id });
+        this.$toast(response.message)
+        this.getAutores();
+      }
     }
   }
 
