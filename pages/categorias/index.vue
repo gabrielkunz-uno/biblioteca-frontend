@@ -39,7 +39,7 @@
           <v-icon
             small
             class="mr-2"
-            @click="editItem(item)"
+            @click="editar(item)"
           >
             mdi-pencil
           </v-icon>
@@ -65,7 +65,7 @@ export default {
         {
           text: 'Código', //nome da coluna
           align: 'center', //alinhamento -center, end, start
-          sortable: false, //se permite ordenação dos dados por essa coluna
+          sortable: true, //se permite ordenação dos dados por essa coluna
           value: 'id', //é o dado que essa coluna vai receber
         },
         {
@@ -99,6 +99,13 @@ export default {
       } catch (error) {
         this.$toast.error('Ocorreu um erro ao deletar o registro');
       }
+    },
+
+    async editar (categoria) {
+      this.$router.push({
+        name: 'categorias-cadastro',
+        params: { id: categoria.id }
+      });
     }
   }
 
