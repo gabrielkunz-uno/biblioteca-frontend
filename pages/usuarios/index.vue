@@ -6,18 +6,24 @@
       <v-row>
         <v-col>
           <v-btn
-            outlined
+            large
+            color="primary"
             @click="getUsuarios"
           >
             Pesquisar
+            <v-icon style="margin-left: 5%">
+              mdi-magnify
+            </v-icon>
           </v-btn>
-        </v-col>
-        <v-col>
           <v-btn
-            outlined
+            large
+            color="success"
             to="/usuarios/cadastro"
           >
             Cadastrar
+            <v-icon style="margin-left: 5%">
+              mdi-plus-circle-outline
+            </v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -39,7 +45,7 @@
           </v-icon>
           <v-icon
             small
-            @click="deleteItem(item)"
+            @click="deletar(item)"
           >
             mdi-delete
           </v-icon>
@@ -87,6 +93,18 @@ export default {
   methods: {
     async getUsuarios () {
       this.usuarios = await this.$axios.$get('http://localhost:3333/usuarios');
+    },
+
+    async deletar (usuario) {
+      try {
+        if (confirm(`Deseja deletar o registro id ${usuario.id} - ${usuario.nome}?`)) {
+          let response = await this.$axios.$post('http://localhost:3333/usuarios/deletar', { id: usuario.id });
+          this.$toast.success(response.message)
+          this.getUsuarios();
+        }
+      } catch (error) {
+        this.$toast.error('Ocorreu um erro ao deletar o registro');
+      }
     }
   }
 

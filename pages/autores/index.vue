@@ -6,18 +6,24 @@
       <v-row>
         <v-col>
           <v-btn
-            outlined
+            large
+            color="primary"
             @click="getAutores"
           >
             Pesquisar
+            <v-icon style="margin-left: 5%">
+              mdi-magnify
+            </v-icon>
           </v-btn>
-        </v-col>
-        <v-col>
           <v-btn
-            outlined
+            large
+            color="success"
             to="/autores/cadastro"
           >
             Cadastrar
+            <v-icon style="margin-left: 5%">
+              mdi-plus-circle-outline
+            </v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -91,13 +97,13 @@ export default {
 
     async deletar (autor) {
       try {
-        if (confirm(`Deseja deletar o autor id ${autor.id} - ${autor.nome}?`)) {
+        if (confirm(`Deseja deletar o registro id ${autor.id} - ${autor.nome}?`)) {
           let response = await this.$axios.$post('http://localhost:3333/autores/deletar', { id: autor.id });
           this.$toast.success(response.message)
           this.getAutores();
         }
       } catch (error) {
-        this.$toast.error('Ocorreu um erro ao atender a requisição. Contate o administrador do sistema.')
+        this.$toast.error('Ocorreu um erro ao deletar o registro')
       }
     }
   }

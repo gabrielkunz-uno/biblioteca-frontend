@@ -43,18 +43,23 @@
         </v-row>
       </v-container>
     </v-form>
-    <v-btn
-      outlined
-      to="/autores"
-    >
-      Cancelar
-    </v-btn>
-    <v-btn
-      outlined
-      @click="cadastrar"
-    >
-      Cadastrar
-    </v-btn>
+    <v-container>
+      <v-btn
+        color="success"
+        style="float: right;"
+        large
+        @click="cadastrar"
+      >
+        Cadastrar
+      </v-btn>
+      <v-btn
+        color="error"
+        large
+        to="/autores"
+      >
+        Cancelar
+      </v-btn>
+    </v-container>
   </v-container>
 </template>
 
@@ -68,11 +73,13 @@ export default {
       autor: {
         id: null,
         nome: null,
-        email: null
+        email: null,
+        senha: null,
+        confirmacao: null
       },
       rule: [
         v => !!v || 'Esse campo é obrigatório'
-      ]
+      ],
     }
   },
 
@@ -80,7 +87,7 @@ export default {
     async cadastrar () {
       try {
         if (!this.valid) {
-          return this.$toast.warning('O formulário de cadastro não é válido!')
+          return this.$toast.warning('Preencha todos os campos obrigatórios')
         }
         let autor = {
           nome: this.autor.nome,

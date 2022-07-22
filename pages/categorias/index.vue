@@ -6,18 +6,24 @@
       <v-row>
         <v-col>
           <v-btn
-            outlined
+            large
+            color="primary"
             @click="getCategorias"
           >
             Pesquisar
+            <v-icon style="margin-left: 5%">
+              mdi-magnify
+            </v-icon>
           </v-btn>
-        </v-col>
-        <v-col>
           <v-btn
-            outlined
+            large
+            color="success"
             to="/categorias/cadastro"
           >
             Cadastrar
+            <v-icon style="margin-left: 5%">
+              mdi-plus-circle-outline
+            </v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -39,7 +45,7 @@
           </v-icon>
           <v-icon
             small
-            @click="deleteItem(item)"
+            @click="deletar(item)"
           >
             mdi-delete
           </v-icon>
@@ -81,6 +87,18 @@ export default {
   methods: {
     async getCategorias () {
       this.categorias = await this.$axios.$get('http://localhost:3333/categorias');
+    },
+
+    async deletar (categoria) {
+      try {
+        if (confirm(`Deseja deletar o registro id ${categoria.id} - ${categoria.nome}?`)) {
+          let response = await this.$axios.$post('http://localhost:3333/categorias/deletar', { id: categoria.id });
+          this.$toast.success(response.message)
+          this.getCategorias();
+        }
+      } catch (error) {
+        this.$toast.error('Ocorreu um erro ao deletar o registro');
+      }
     }
   }
 

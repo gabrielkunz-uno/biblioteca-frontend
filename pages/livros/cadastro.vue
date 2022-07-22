@@ -2,7 +2,7 @@
   <v-container>
     <h1>Cadastro de Livros</h1>
     <hr>
-    <v-form>
+    <v-form v-model="valid">
       <v-container>
         <v-row>
           <v-col
@@ -23,6 +23,8 @@
               v-model="livro.titulo"
               placeholder="Título"
               label="Título"
+              required
+              :rules="rule"
               outlined
             />
           </v-col>
@@ -33,6 +35,8 @@
               v-model="livro.sinopse"
               placeholder="Sinopse"
               label="Sinopse"
+              required
+              :rules="rule"
               outlined
             />
           </v-col>
@@ -48,6 +52,8 @@
               label="Autor"
               item-text="nome"
               item-value="id"
+              required
+              :rules="rule"
             ></v-autocomplete>
           </v-col>
           <v-col
@@ -60,23 +66,30 @@
               label="Categoria"
               item-text="nome"
               item-value="id"
+              required
+              :rules="rule"
             ></v-autocomplete>
           </v-col>
         </v-row>
       </v-container>
     </v-form>
-    <v-btn
-      outlined
-      to="/livros"
-    >
-      Cancelar
-    </v-btn>
-    <v-btn
-      outlined
-      @click="cadastrar"
-    >
-      Cadastrar
-    </v-btn>
+    <v-container>
+      <v-btn
+        color="success"
+        style="float: right;"
+        large
+        @click="cadastrar"
+      >
+        Cadastrar
+      </v-btn>
+      <v-btn
+        color="error"
+        large
+        to="/livros"
+      >
+        Cancelar
+      </v-btn>
+    </v-container>
   </v-container>
 </template>
 
@@ -86,6 +99,7 @@ export default {
 
   data () {
     return {
+      valid: false,
       livro: {
         id: null,
         titulo: null,
@@ -94,7 +108,10 @@ export default {
         idAutor: null
       },
       categorias: [],
-      autores: []
+      autores: [],
+      rule: [
+        v => !!v || 'Esse campo é obrigatório'
+      ]
     }
   },
 
@@ -105,14 +122,22 @@ export default {
 
   methods: {
     async cadastrar () {
-      let livro = {
-        titulo: this.livro.titulo,
-        sinopse: this.livro.sinopse,
-        idCategoria: this.livro.idCategoria,
-        idAutor: this.livro.idAutor
-      };
-      let response = await this.$axios.$post('http://localhost:3333/livros', livro);
-      console.log(response);
+      try {
+        if (!this.valid) {
+          return this.$toast.warning('Preencha todos os campos obrigatórios')
+        }
+        let livro = {
+          titulo: this.livro.titulo,
+          sinopse: this.livro.sinopse,
+          idCategoria: this.livro.idCategoria,
+          idAutor: this.livro.idAutor
+        }
+        await this.$axios.$post('http://localhost:3333/livros', livro);
+        this.$toast.success('Cadastro realizado com sucesso!');
+        this.$router.push('/livros');
+      } catch (error) {
+        this.$toast.error('Ocorreu um erro ao realizar o cadastro!');
+      }
     },
 
     async getAutores () {
